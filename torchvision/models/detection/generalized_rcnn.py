@@ -37,7 +37,7 @@ class GeneralizedRCNN(nn.Module):
         if self.training:
             return losses
 
-        return detections
+        return detections, losses
 
     def forward(self, images, targets=None):
         # type: (List[Tensor], Optional[List[Dict[str, Tensor]]]) -> Tuple[Dict[str, Tensor], List[Dict[str, Tensor]]]
