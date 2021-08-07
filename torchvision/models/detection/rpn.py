@@ -231,7 +231,7 @@ class RegionProposalNetwork(torch.nn.Module):
         num_images = proposals.shape[0]
         device = proposals.device
         # do not backprop throught objectness
-        objectness = objectness.detach()
+#         objectness = objectness.detach()
         objectness = objectness.reshape(num_images, -1)
 
         levels = [
@@ -355,7 +355,7 @@ class RegionProposalNetwork(torch.nn.Module):
         proposals = proposals.view(num_images, -1, 4)
         boxes, scores = self.filter_proposals(proposals, objectness, images.image_sizes, num_anchors_per_level)
 
-        losses = {}
+        losses = {"rpn_scores":scores}
         if self.training:
             assert targets is not None
             labels, matched_gt_boxes = self.assign_targets_to_anchors(anchors, targets)
@@ -365,6 +365,7 @@ class RegionProposalNetwork(torch.nn.Module):
             losses = {
                 "loss_objectness": loss_objectness,
                 "loss_rpn_box_reg": loss_rpn_box_reg,
-                "scores": scores
+                "scores": scores,
+                "labels": labels
             }
         return boxes, losses
