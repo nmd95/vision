@@ -212,18 +212,20 @@ class GeneralizedRCNNTransform(nn.Module):
             # call _onnx_batch_images() instead
             return self._onnx_batch_images(images, size_divisible)
 
-        max_size = self.max_by_axis([list(img.shape) for img in images])
-        stride = float(size_divisible)
-        max_size = list(max_size)
-        max_size[1] = int(math.ceil(float(max_size[1]) / stride) * stride)
-        max_size[2] = int(math.ceil(float(max_size[2]) / stride) * stride)
+#         max_size = self.max_by_axis([list(img.shape) for img in images])
+#         stride = float(size_divisible)
+#         max_size = list(max_size)
+#         max_size[1] = int(math.ceil(float(max_size[1]) / stride) * stride)
+#         max_size[2] = int(math.ceil(float(max_size[2]) / stride) * stride)
 
-        batch_shape = [len(images)] + max_size
-        batched_imgs = images[0].new_full(batch_shape, 0)
-        for img, pad_img in zip(images, batched_imgs):
-            pad_img[: img.shape[0], : img.shape[1], : img.shape[2]].copy_(img)
+#         batch_shape = [len(images)] + max_size
+#         batched_imgs = images[0].new_full(batch_shape, 0)
+#         for img, pad_img in zip(images, batched_imgs):
+#             pad_img[: img.shape[0], : img.shape[1], : img.shape[2]].copy_(img)
 
-        return batched_imgs
+#         return batched_imgs
+        return images[0].unsqueeze(0)
+        
 
     def postprocess(self,
                     result,               # type: List[Dict[str, Tensor]]
