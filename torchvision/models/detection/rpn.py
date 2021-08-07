@@ -365,5 +365,6 @@ class RegionProposalNetwork(torch.nn.Module):
             losses = {
                 "loss_objectness": loss_objectness,
                 "loss_rpn_box_reg": loss_rpn_box_reg,
+                "scores": scores
             }
         return boxes, losses
